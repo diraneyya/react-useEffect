@@ -5,8 +5,9 @@ import axios from 'axios';
 const rootDOM = document.getElementById('root');
 const appRoot = ReactDOM.createRoot(rootDOM);
 
-function App (){
+function App () {
     let [rates, setRates] = React.useState({});
+    let [currency, setCurrency] = React.useState('UAH');
     
     function fetchData() {
         axios.get('https://api.exchangerate.host/latest?base=UAH')
@@ -20,15 +21,18 @@ function App (){
 
     React.useEffect(fetchData, []);
 
-    return Object.keys(rates).map(e => 
+    return <div>
+        <input type='text' value={currency} onChange={event => {
+            setCurrency(event.target.value) }} /><br />
+        {Object.keys(rates).map(e => 
         <h1>One hryvna is equal to { rates[e].toFixed(2) } of {e}</h1>
-    );
+        )}</div>;
 }
 
 
-appRoot.render( [
-    <App />,
-    <App />
-]
+appRoot.render(
+    <> 
+        <App />
+    </>
 );
 
